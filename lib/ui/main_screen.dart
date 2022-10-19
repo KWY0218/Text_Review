@@ -41,6 +41,7 @@ class PostList extends StatelessWidget {
         builder: (BuildContext context, snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
+                padding: const EdgeInsets.all(20.0),
                 itemCount: snapshot.data!.length,
                 itemBuilder: (BuildContext context, int index) {
                   return PostItem(snapshot.data![index]);
@@ -59,9 +60,13 @@ class PostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(_post.content!),
-      trailing: LikeIcon(_post.isLike!),
+    return Card(
+      elevation: 4,
+      margin: const EdgeInsets.all(10),
+      child: ListTile(
+        title: Text(_post.content!),
+        trailing: LikeIcon(_post.isLike!),
+      ),
     );
   }
 }
