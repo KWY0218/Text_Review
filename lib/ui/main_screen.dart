@@ -83,14 +83,13 @@ class _MainScreenState extends State<MainScreen> {
   onClickLike(int index, int currLikeCount, bool currIsLike) async {
     final currDoc = db.collection("Posts").doc("$index");
     final likeCount = currIsLike ? currLikeCount - 1 : currLikeCount + 1;
-    db.runTransaction((transaction) => transaction
-        .get(currDoc)
-        .then((value) => {
-              transaction.update(currDoc, {"isLike": !currIsLike}).update(
-                  currDoc, {"likeCount": likeCount})
-            })
-        .then((value) => Future.delayed(const Duration(milliseconds: 500), () {
-              setState(() {});
-            })));
+    db.runTransaction((transaction) => transaction.get(currDoc).then((value) {
+          transaction
+              .update(currDoc, {"isLike": !currIsLike})
+              .update(currDoc, {"likeCount": likeCount});
+          Future.delayed(const Duration(milliseconds: 500), () {
+            setState(() {PostList(getPosts(), onClickLike);});
+          });
+        }));
   }
 }
