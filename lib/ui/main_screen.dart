@@ -11,11 +11,35 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   var db = FirebaseFirestore.instance;
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final _pagerWidgets = [PostList(getPosts(), onClickLike), Text("second")];
     return Scaffold(
-      body: PostList(getPosts(), onClickLike),
+      body: Center(
+        child: _pagerWidgets.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Main',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite_border_sharp),
+              label: 'Like',
+            )
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.amber[800],
+          onTap: _onItemTapped),
     );
   }
 
