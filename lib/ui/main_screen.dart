@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:text_review/data/Post.dart';
+import 'package:text_review/ui/posts_count_screen.dart';
 
 import 'posts_screen.dart';
 
@@ -23,7 +24,10 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _pagerWidgets = [PostList(getPosts(), onClickLike), Text("second")];
+    final _pagerWidgets = [
+      PostList(getPosts(), onClickLike),
+      PostCountList(getPosts())
+    ];
     return Scaffold(
       body: Center(
         child: _pagerWidgets.elementAt(_selectedIndex),
