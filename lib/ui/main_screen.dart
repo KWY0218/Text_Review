@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:text_review/data/Post.dart';
 import 'package:text_review/ui/posts_count_screen.dart';
 
+import 'login_screen.dart';
 import 'posts_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -14,6 +16,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   var db = FirebaseFirestore.instance;
+  final _authentication = FirebaseAuth.instance;
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -29,6 +32,25 @@ class _MainScreenState extends State<MainScreen> {
       PostCountList(getPosts())
     ];
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Text Review Screen'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {
+                _authentication.signOut();
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => const LoginScreen()),
+                    (route) => false);
+              },
+              icon: const Icon(
+                Icons.exit_to_app_sharp,
+                color: Colors.white,
+              ))
+        ],
+      ),
       body: Center(
         child: _pagerWidgets.elementAt(_selectedIndex),
       ),
